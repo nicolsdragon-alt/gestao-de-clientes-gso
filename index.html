@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyCare - Gestão de Clientes e Serviços</title>
+    <style>
+        /* --- CSS: Design System Moderno --- */
+        :root {
+            --primary-color: #9b59b6; /* Roxo elegante */
+            --primary-dark: #8e44ad;
+            --secondary-color: #ff6b6b; /* Rosa coral */
+            --success-color: #00d2d3;
+            --warning-color: #feca57;
+            --danger-color: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #b2bec3;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header com Estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: var(--gray);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--primary-color);
+            font-size: 12px;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .content-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .content-header p {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Barra de Pesquisa e Filtros */
+        .filters-bar {
+            padding: 20px 30px;
+            background: var(--light);
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-group select {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Tabela */
+        .table-wrapper {
+            overflow-x: auto;
+            padding: 0 30px 30px 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 10px;
+            background: var(--light);
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background: #faf5ff;
+            transition: background 0.3s;
+        }
+
+        /* Badges de Status */
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: #d4f8e8;
+            color: #00b894;
+        }
+
+        .badge-pending {
+            background: #fff3e0;
+            color: #f39c12;
+        }
+
+        .badge-completed {
+            background: #e3f2fd;
+            color: #3498db;
+        }
+
+        /* Botões */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #00b8b9;
+        }
+
+        .btn-edit {
+            background: var(--warning-color);
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-view {
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+        }
+
+        .close-modal {
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            background: var(--light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            z-index: 1100;
+            animation: slideInRight 0.3s;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-bar {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .filter-group select {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cards de Estatísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total de Clientes</h3>
+                <div class="stat-number" id="totalClients">0</div>
+                <div class="stat-label">👥 Clientes cadastrados</div>
+            </div>
+            <div class="stat-card">
+                <h3>Em Atendimento</h3>
+                <div class="stat-number" id="activeClients">0</div>
+                <div class="stat-label">💆‍♀️ Clientes ativos</div>
+            </div>
+            <div class="stat-card">
+                <h3>Serviços Realizados</h3>
+                <div class="stat-number" id="totalServices">0</div>
+                <div class="stat-label">✨ Serviços completados</div>
+            </div>
+            <div class="stat-card">
+                <h3>Faturamento Mensal</h3>
+                <div class="stat-number" id="totalRevenue">R$ 0</div>
+                <div class="stat-label">💰 Receita total</div>
+            </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <div class="content-header">
+                <div>
+                    <h1>✨ BeautyCare</h1>
+                    <p>Gestão de Clientes e Serviços de Estética</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">+ Novo Cliente</button>
+            </div>
+
+            <!-- Filtros e Pesquisa -->
+            <div class="filters-bar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar por nome, email ou telefone...">
+                </div>
+                <div class="filter-group">
+                    <select id="statusFilter">
+                        <option value="all">Todos os Status</option>
+                        <option value="Em Atendimento">Em Atendimento</option>
+                        <option value="Agendado">Agendado</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                    <select id="serviceFilter">
+                        <option value="all">Todos os Serviços</option>
+                        <option value="Limpeza de Pele">Limpeza de Pele</option>
+                        <option value="Massagem Relaxante">Massagem Relaxante</option>
+                        <option value="Design de Sobrancelhas">Design de Sobrancelhas</option>
+                        <option value="Manicure e Pedicure">Manicure e Pedicure</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Tabela de Clientes -->
+            <div class="table-wrapper">
+                <table id="clientsTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Contato</th>
+                            <th>Serviço</th>
+                            <th>Data</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Dados serão inseridos via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro/Edição -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Cliente</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="clientForm">
+                <div class="modal-body">
+                    <input type="hidden" id="clientId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome Completo *</label>
+                            <input type="text" id="name" required placeholder="Ex: Ana Silva">
+                        </div>
+                        <div class="form-group">
+                            <label>Idade</label>
+                            <input type="number" id="age" placeholder="Ex: 28">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>E-mail *</label>
+                            <input type="email" id="email" required placeholder="ana@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone *</label>
+                            <input type="tel" id="phone" required placeholder="(11) 99999-9999">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Serviço *</label>
+                            <select id="service" required>
+                                <option value="">Selecione um serviço</option>
+                                <option value="Limpeza de Pele">Limpeza de Pele - R$ 150</option>
+                                <option value="Massagem Relaxante">Massagem Relaxante - R$ 200</option>
+                                <option value="Design de Sobrancelhas">Design de Sobrancelhas - R$ 80</option>
+                                <option value="Manicure e Pedicure">Manicure e Pedicure - R$ 120</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Data do Serviço</label>
+                            <input type="date" id="serviceDate">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Valor (R$)</label>
+                            <input type="number" id="price" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="status">
+                                <option value="Em Atendimento">Em Atendimento</option>
+                                <option value="Agendado">Agendado</option>
+                                <option value="Concluído">Concluído</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Observações</label>
+                        <textarea id="notes" rows="3" placeholder="Alguma observação importante sobre o cliente..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" style="background: #e0e0e0;" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Salvar Cliente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // --- Banco de Dados Local (LocalStorage) ---
+        let clients = JSON.parse(localStorage.getItem('beautycare_clients')) || [];
+
+        // Dados de exemplo para demonstração
+        if (clients.length === 0) {
+            clients = [
+                {
+                    id: 1,
+                    name: "Carla Mendes",
+                    age: 32,
+                    email: "carla@email.com",
+                    phone: "(11) 98765-4321",
+                    service: "Limpeza de Pele",
+                    serviceDate: "2024-12-15",
+                    price: 150,
+                    status: "Concluído",
+                    notes: "Cliente com pele sensível"
+                },
+                {
+                    id: 2,
+                    name: "Fernanda Lima",
+                    age: 28,
+                    email: "fernanda@email.com",
+                    phone: "(11) 99876-5432",
+                    service: "Massagem Relaxante",
+                    serviceDate: "2024-12-20",
+                    price: 200,
+                    status: "Agendado",
+                    notes: "Preferência por óleo de lavanda"
+                },
+                {
+                    id: 3,
+                    name: "Patricia Souza",
+                    age: 45,
+                    email: "patricia@email.com",
+                    phone: "(11) 97654-3210",
+                    service: "Design de Sobrancelhas",
+                    serviceDate: "2024-12-10",
+                    price: 80,
+                    status: "Em Atendimento",
+                    notes: ""
+                }
+            ];
+            saveToLocalStorage();
+        }
+
+        // Elementos DOM
+        const tableBody = document.getElementById('tableBody');
+        const modal = document.getElementById('clientModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const clientForm = document.getElementById('clientForm');
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const serviceFilter = document.getElementById('serviceFilter');
+
+        // Preços dos serviços
+        const servicePrices = {
+            "Limpeza de Pele": 150,
+            "Massagem Relaxante": 200,
+            "Design de Sobrancelhas": 80,
+            "Manicure e Pedicure": 120
+        };
+
+        // Atualizar preço automaticamente ao selecionar serviço
+        document.getElementById('service').addEventListener('change', function() {
+            const service = this.value;
+            if (service && servicePrices[service]) {
+                document.getElementById('price').value = servicePrices[service];
+            }
+        });
+
+        // Renderizar Tabela com Filtros
+        function renderTable() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusValue = statusFilter.value;
+            const serviceValue = serviceFilter.value;
+
+            let filteredClients = clients.filter(client => {
+                const matchesSearch = client.name.toLowerCase().includes(searchTerm) ||
+                                    client.email.toLowerCase().includes(searchTerm) ||
+                                    client.phone.includes(searchTerm);
+                const matchesStatus = statusValue === 'all' || client.status === statusValue;
+                const matchesService = serviceValue === 'all' || client.service === serviceValue;
+                return matchesSearch && matchesStatus && matchesService;
+            });
+
+            if (filteredClients.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px;">📭 Nenhum cliente encontrado</td></tr>';
+                updateStats();
+                return;
+            }
+
+            tableBody.innerHTML = filteredClients.map(client => `
+                <tr>
+                    <td>
+                        <strong>${client.name}</strong><br>
+                        <small style="color: #999;">${client.age} anos</small>
+                    </td>
+                    <td>
+                        ${client.email}<br>
+                        <small>${client.phone}</small>
+                    </td>
+                    <td>${client.service}</td>
+                    <td>${formatDate(client.serviceDate)}</td>
+                    <td><strong>R$ ${client.price}</strong></td>
+                    <td>${getStatusBadge(client.status)}</td>
+                    <td>
+                        <button class="btn btn-view" onclick="viewClient(${client.id})">👁️</button>
+                        <button class="btn btn-edit" onclick="editClient(${client.id})">✏️</button>
+                        <button class="btn btn-delete" onclick="deleteClient(${client.id})">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            updateStats();
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                'Em Atendimento': '<span class="badge badge-active">● Em Atendimento</span>',
+                'Agendado': '<span class="badge badge-pending">● Agendado</span>',
+                'Concluído': '<span class="badge badge-completed">● Concluído</span>'
+            };
+            return badges[status] || status;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Não agendado';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        // Atualizar Cards de Estatísticas
+        function updateStats() {
+            const total = clients.length;
+            const active = clients.filter(c => c.status === 'Em Atendimento').length;
+            const completed = clients.filter(c => c.status === 'Concluído').length;
+            const totalRevenue = clients.reduce((sum, c) => sum + (c.price || 0), 0);
+            
+            document.getElementById('totalClients').innerText = total;
+            document.getElementById('activeClients').innerText = active;
+            document.getElementById('totalServices').innerText = completed;
+            document.getElementById('totalRevenue').innerHTML = `R$ ${totalRevenue.toFixed(2)}`;
+        }
+
+        // CRUD Operations
+        function saveClient(clientData) {
+            if (clientData.id) {
+                // Update
+                const index = clients.findIndex(c => c.id === clientData.id);
+                clients[index] = clientData;
+                showToast('Cliente atualizado com sucesso!', 'success');
+            } else {
+                // Create
+                clientData.id = Date.now();
+                clients.push(clientData);
+                showToast('Cliente cadastrado com sucesso!', 'success');
+            }
+            saveToLocalStorage();
+            renderTable();
+            closeModal();
+        }
+
+        function deleteClient(id) {
+            if (confirm('⚠️ Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita.')) {
+                clients = clients.filter(c => c.id !== id);
+                saveToLocalStorage();
+                renderTable();
+                showToast('Cliente removido com sucesso', 'success');
+            }
+        }
+
+        function editClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (client) {
+                document.getElementById('clientId').value = client.id;
+                document.getElementById('name').value = client.name;
+                document.getElementById('age').value = client.age;
+                document.getElementById('email').value = client.email;
+                document.getElementById('phone').value = client.phone;
+                document.getElementById('service').value = client.service;
+                document.getElementById('serviceDate').value = client.serviceDate;
+                document.getElementById('price').value = client.price;
+                document.getElementById('status').value = client.status;
+                document.getElementById('notes').value = client.notes || '';
+                modalTitle.innerText = '✏️ Editar Cliente';
+                modal.style.display = 'flex';
+            }
+        }
+
+        function viewClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (client) {
+                alert(`📋 DETALHES DO CLIENTE\n\nNome: ${client.name}\nEmail: ${client.email}\nTelefone: ${client.phone}\nServiço: ${client.service}\nStatus: ${client.status}\nValor: R$ ${client.price}\nObservações: ${client.notes || 'Nenhuma'}`);
+            }
+        }
+
+        // Form Submit
+        clientForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const clientData = {
+                id: parseInt(document.getElementById('clientId').value) || null,
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                service: document.getElementById('service').value,
+                serviceDate: document.getElementById('serviceDate').value,
+                price: parseFloat(document.getElementById('price').value),
+                status: document.getElementById('status').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            if (!clientData.name || !clientData.email || !clientData.phone || !clientData.service) {
+                showToast('Preencha todos os campos obrigatórios!', 'error');
+                return;
+            }
+            
+            saveClient(clientData);
+        });
+
+        // Utilitários
+        function saveToLocalStorage() {
+            localStorage.setItem('beautycare_clients', JSON.stringify(clients));
+        }
+
+        function openModal() {
+            clientForm.reset();
+            document.getElementById('clientId').value = '';
+            modalTitle.innerText = '✨ Novo Cliente';
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'flex';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Event Listeners para Filtros
+        searchInput.addEventListener('input', renderTable);
+        statusFilter.addEventListener('change', renderTable);
+        serviceFilter.addEventListener('change', renderTable);
+
+        // Fechar modal clicando fora
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Inicialização
+        renderTable();
+    </script>
+</body>
+</html>

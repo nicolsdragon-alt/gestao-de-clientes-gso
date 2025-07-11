@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyCare - Documentação UML Completa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .documentation-header {
+            background: linear-gradient(135deg, #9b59b6, #ff6b6b);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .documentation-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .documentation-header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Navegação */
+        .nav-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .nav-link {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #9b59b6;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: #9b59b6;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Cards de Diagramas */
+        .diagram-card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s;
+        }
+
+        .diagram-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            font-size: 1.5em;
+        }
+
+        .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+
+        .card-header:hover .toggle-icon {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+            display: block;
+            background: #faf9fe;
+        }
+
+        .card-content.hidden {
+            display: none;
+        }
+
+        /* Diagramas SVG */
+        .diagram-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 0 1px #e0e0e0;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Tabelas de descrição */
+        .description-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .description-table th {
+            background: #9b59b6;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .description-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .description-table tr:hover {
+            background: #f5f0f9;
+        }
+
+        /* Legendas */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #9b59b6;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        /* Botões */
+        .btn-copy {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-copy:hover {
+            background: #8e44ad;
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .card-header h2 {
+                font-size: 1.2em;
+            }
+            
+            .nav-link {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .diagram-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="documentation-header">
+        <h1>📐 BeautyCare - Documentação UML</h1>
+        <p>Sistema de Gestão de Clientes e Serviços de Estética</p>
+        <div class="badge">Versão 2.0 | Modelagem Completa</div>
+    </div>
+
+    <div class="container">
+        <!-- Navegação Rápida -->
+        <div class="nav-bar">
+            <div class="nav-links">
+                <a href="#class-diagram" class="nav-link">📊 Diagrama de Classes</a>
+                <a href="#usecase-diagram" class="nav-link">👥 Casos de Uso</a>
+                <a href="#sequence-diagram" class="nav-link">🔄 Diagrama de Sequência</a>
+                <a href="#er-diagram" class="nav-link">🗄️ DER</a>
+                <a href="#component-diagram" class="nav-link">🧩 Componentes</a>
+                <a href="#state-diagram" class="nav-link">📈 Estados</a>
+                <a href="#activity-diagram" class="nav-link">⚙️ Atividades</a>
+            </div>
+        </div>
+
+        <!-- Diagrama de Classes -->
+        <div id="class-diagram" class="diagram-card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>📊 Diagrama de Classes - Estrutura do Sistema</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Fundo -->
+                        <rect width="1200" height="800" fill="#faf9fe" rx="10"/>
+                        
+                        <!-- Classe Client -->
+                        <g transform="translate(50, 50)">
+                            <rect width="250" height="280" fill="#FEF9E6" stroke="#9B59B6" stroke-width="2" rx="8"/>
+                            <rect width="250" height="40" fill="#9B59B6" rx="8"/>
+                            <text x="125" y="28" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Client</text>
+                            <line x1="0" y1="40" x2="250" y2="40" stroke="#9B59B6" stroke-width="1"/>
+                            <text x="10" y="65" font-size="12" fill="#555">- id: int</text>
+                            <text x="10" y="85" font-size="12" fill="#555">- name: string</text>
+                            <text x="10" y="105" font-size="12" fill="#555">- age: int</text>
+                            <text x="10" y="125" font-size="12" fill="#555">- email: string</text>
+                            <text x="10" y="145" font-size="12" fill="#555">- phone: string</text>
+                            <text x="10" y="165" font-size="12" fill="#555">- service: string</text>
+                            <text x="10" y="185" font-size="12" fill="#555">- serviceDate: date</text>
+                            <text x="10" y="205" font-size="12" fill="#555">- price: float</text>
+                            <text x="10" y="225" font-size="12" fill="#555">- status: string</text>
+                            <text x="10" y="245" font-size="12" fill="#555">- notes: string</text>
+                            <line x1="0" y1="250" x2="250" y2="250" stroke="#9B59B6" stroke-width="1"/>
+                            <text x="10" y="270" font-size="11" fill="#888">+ getters/setters()</text>
+                        </g>
+
+                        <!-- Classe Service -->
+                        <g transform="translate(380, 50)">
+                            <rect width="250" height="230" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                            <rect width="250" height="40" fill="#00D2D3" rx="8"/>
+                            <text x="125" y="28" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Service</text>
+                            <line x1="0" y1="40" x2="250" y2="40" stroke="#00D2D3" stroke-width="1"/>
+                            <text x="10" y="65" font-size="12" fill="#555">- id: int</text>
+                            <text x="10" y="85" font-size="12" fill="#555">- name: string</text>
+                            <text x="10" y="105" font-size="12" fill="#555">- description: string</text>
+                            <text x="10" y="125" font-size="12" fill="#555">- duration: int</text>
+                            <text x="10" y="145" font-size="12" fill="#555">- basePrice: float</text>
+                            <text x="10" y="165" font-size="12" fill="#555">- category: string</text>
+                            <line x1="0" y1="195" x2="250" y2="195" stroke="#00D2D3" stroke-width="1"/>
+                            <text x="10" y="215" font-size="11" fill="#888">+ calculatePrice()</text>
+                        </g>
+
+                        <!-- Classe Appointment -->
+                        <g transform="translate(710, 50)">
+                            <rect width="250" height="250" fill="#FFF3E0" stroke="#FECA57" stroke-width="2" rx="8"/>
+                            <rect width="250" height="40" fill="#FECA57" rx="8"/>
+                            <text x="125" y="28" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Appointment</text>
+                            <line x1="0" y1="40" x2="250" y2="40" stroke="#FECA57" stroke-width="1"/>
+                            <text x="10" y="65" font-size="12" fill="#555">- id: int</text>
+                            <text x="10" y="85" font-size="12" fill="#555">- clientId: int</text>
+                            <text x="10" y="105" font-size="12" fill="#555">- serviceId: int</text>
+                            <text x="10" y="125" font-size="12" fill="#555">- dateTime: datetime</text>
+                            <text x="10" y="145" font-size="12" fill="#555">- status: string</text>
+                            <text x="10" y="165" font-size="12" fill="#555">- notes: string</text>
+                            <line x1="0" y1="195" x2="250" y2="195" stroke="#FECA57" stroke-width="1"/>
+                            <text x="10" y="215" font-size="11" fill="#888">+ cancel()</text>
+                            <text x="10" y="235" font-size="11" fill="#888">+ reschedule()</text>
+                        </g>
+
+                        <!-- Classe Payment -->
+                        <g transform="translate(50, 400)">
+                            <rect width="250" height="200" fill="#FCE4EC" stroke="#FF6B6B" stroke-width="2" rx="8"/>
+                            <rect width="250" height="40" fill="#FF6B6B" rx="8"/>
+                            <text x="125" y="28" text-anchor="middle" fill="white" font-weight="bold" font-size="14">Payment</text>
+                            <line x1="0" y1="40" x2="250" y2="40" stroke="#FF6B6B" stroke-width="1"/>
+                            <text x="10" y="65" font-size="12" fill="#555">- id: int</text>
+                            <text x="10" y="85" font-size="12" fill="#555">- appointmentId: int</text>
+                            <text x="10" y="105" font-size="12" fill="#555">- amount: float</text>
+                            <text x="10" y="125" font-size="12" fill="#555">- method: string</text>
+                            <text x="10" y="145" font-size="12" fill="#555">- status: string</text>
+                            <line x1="0" y1="165" x2="250" y2="165" stroke="#FF6B6B" stroke-width="1"/>
+                            <text x="10" y="185" font-size="11" fill="#888">+ process()</text>
+                        </g>
+
+                        <!-- Classe ClientController -->
+                        <g transform="translate(380, 400)">
+                            <rect width="280" height="230" fill="#E8EAF6" stroke="#5C6BC0" stroke-width="2" rx="8"/>
+                            <rect width="280" height="40" fill="#5C6BC0" rx="8"/>
+                            <text x="140" y="28" text-anchor="middle" fill="white" font-weight="bold" font-size="14">ClientController</text>
+                            <line x1="0" y1="40" x2="280" y2="40" stroke="#5C6BC0" stroke-width="1"/>
+                            <text x="10" y="65" font-size="12" fill="#555">- clients: List&lt;Client&gt;</text>
+                            <text x="10" y="85" font-size="12" fill="#555">- localStorage: Storage</text>
+                            <line x1="0" y1="115" x2="280" y2="115" stroke="#5C6BC0" stroke-width="1"/>
+                            <text x="10" y="140" font-size="11" fill="#888">+ getAllClients()</text>
+                            <text x="10" y="160" font-size="11" fill="#888">+ saveClient()</text>
+                            <text x="10" y="180" font-size="11" fill="#888">+ updateClient()</text>
+                            <text x="10" y="200" font-size="11" fill="#888">+ deleteClient()</text>
+                            <text x="10" y="220" font-size="11" fill="#888">+ getFilteredClients()</text>
+                        </g>
+
+                        <!-- Relacionamentos -->
+                        <line x1="300" y1="190" x2="380" y2="190" stroke="#9B59B6" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="340" y="180" text-anchor="middle" font-size="10" fill="#9B59B6">1</text>
+                        <text x="340" y="200" text-anchor="middle" font-size="10" fill="#9B59B6">*</text>
+                        
+                        <line x1="630" y1="165" x2="710" y2="165" stroke="#FECA57" stroke-width="2"/>
+                        <text x="670" y="155" text-anchor="middle" font-size="10">1</text>
+                        <text x="670" y="175" text-anchor="middle" font-size="10">*</text>
+
+                        <line x1="300" y1="500" x2="380" y2="500" stroke="#5C6BC0" stroke-width="2" stroke-dasharray="8,4"/>
+                        <text x="340" y="490" text-anchor="middle" font-size="10">uses</text>
+
+                        <!-- Legenda -->
+                        <g transform="translate(800, 600)">
+                            <rect width="350" height="150" fill="white" stroke="#ccc" stroke-width="1" rx="8"/>
+                            <text x="175" y="25" text-anchor="middle" font-weight="bold" font-size="14">Legenda</text>
+                            <line x1="20" y1="45" x2="60" y2="45" stroke="#9B59B6" stroke-width="2"/>
+                            <text x="70" y="50" font-size="12">Entidade Principal</text>
+                            <line x1="20" y1="70" x2="60" y2="70" stroke="#00D2D3" stroke-width="2"/>
+                            <text x="70" y="75" font-size="12">Serviço</text>
+                            <line x1="20" y1="95" x2="60" y2="95" stroke="#FECA57" stroke-width="2"/>
+                            <text x="70" y="100" font-size="12">Agendamento</text>
+                            <line x1="200" y1="45" x2="240" y2="45" stroke="#5C6BC0" stroke-width="2" stroke-dasharray="5,5"/>
+                            <text x="250" y="50" font-size="12">Controller</text>
+                        </g>
+                    </svg>
+                </div>
+                
+                <h3>📋 Descrição das Classes</h3>
+                <table class="description-table">
+                    <thead>
+                        <tr><th>Classe</th><th>Descrição</th><th>Responsabilidades</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Client</strong></td><td>Representa um cliente da clínica</td><td>Armazenar dados pessoais, histórico de serviços, status do tratamento</td></tr>
+                        <tr><td><strong>Service</strong></td><td>Define os serviços oferecidos</td><td>Gerenciar preços, duração, categorias dos procedimentos</td></tr>
+                        <tr><td><strong>Appointment</strong></td><td>Gerencia agendamentos</td><td>Controlar datas, status, reagendamentos e cancelamentos</td></tr>
+                        <tr><td><strong>Payment</strong></td><td>Processa pagamentos</td><td>Registrar transações, emitir recibos, controle financeiro</td></tr>
+                        <tr><td><strong>ClientController</strong></td><td>Controlador principal</td><td>Gerenciar CRUD, filtros, persistência de dados</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Diagrama de Casos de Uso -->
+        <div id="usecase-diagram" class="diagram-card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>👥 Diagrama de Casos de Uso - Atores e Funcionalidades</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="1200" height="700" fill="#faf9fe" rx="10"/>
+                        
+                        <!-- Atores -->
+                        <!-- Admin -->
+                        <g transform="translate(50, 300)">
+                            <circle cx="30" cy="20" r="15" fill="#9B59B6"/>
+                            <line x1="30" y1="35" x2="30" y2="70" stroke="#333" stroke-width="2"/>
+                            <line x1="15" y1="50" x2="45" y2="50" stroke="#333" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="15" y2="90" stroke="#333" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="45" y2="90" stroke="#333" stroke-width="2"/>
+                            <text x="30" y="115" text-anchor="middle" font-weight="bold" font-size="14">Administrador</text>
+                        </g>
+
+                        <!-- Recepcionista -->
+                        <g transform="translate(50, 100)">
+                            <circle cx="30" cy="20" r="15" fill="#00D2D3"/>
+                            <line x1="30" y1="35" x2="30" y2="70" stroke="#333" stroke-width="2"/>
+                            <line x1="15" y1="50" x2="45" y2="50" stroke="#333" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="15" y2="90" stroke="#333" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="45" y2="90" stroke="#333" stroke-width="2"/>
+                            <text x="30" y="115" text-anchor="middle" font-weight="bold" font-size="14">Recepcionista</text>
+                        </g>
+
+                        <!-- Cliente -->
+                        <g transform="translate(50, 550)">
+                            <circle cx="30" cy="20" r="15" fill="#FECA57"/>
+                            <line x1="30" y1="35" x2="30" y2="70" stroke="#333" stroke-width="2"/>
+                            <line x1="15" y1="50" x2="45" y2="50" stroke="#333" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="15" y2="90" stroke="#333" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="45" y2="90" stroke="#333" stroke-width="2"/>
+                            <text x="30" y="115" text-anchor="middle" font-weight="bold" font-size="14">Cliente</text>
+                        </g>
+
+                        <!-- Sistema (Boundary) -->
+                        <rect x="200" y="80" width="900" height="580" fill="none" stroke="#9B59B6" stroke-width="2" rx="10" stroke-dasharray="10,5"/>
+                        <text x="650" y="105" text-anchor="middle" font-weight="bold" font-size="16" fill="#9B59B6">Sistema BeautyCare</text>
+
+                        <!-- Casos de Uso - Gestão de Clientes -->
+                        <ellipse cx="350" cy="180" rx="90" ry="25" fill="#E8F8F5" stroke="#00D2D3" stroke-width="1.5"/>
+                        <text x="350" y="185" text-anchor="middle" font-size="12">Cadastrar Cliente</text>
+
+                        <ellipse cx="550" cy="180" rx="80" ry="25" fill="#E8F8F5" stroke="#00D2D3" stroke-width="1.5"/>
+                        <text x="550" y="185" text-anchor="middle" font-size="12">Editar Cliente</text>
+
+                        <ellipse cx="750" cy="180" rx="80" ry="25" fill="#E8F8F5" stroke="#00D2D3" stroke-width="1.5"/>
+                        <text x="750" y="185" text-anchor="middle" font-size="12">Excluir Cliente</text>
+
+                        <ellipse cx="350" cy="260" rx="90" ry="25" fill="#FFF3E0" stroke="#FECA57" stroke-width="1.5"/>
+                        <text x="350" y="265" text-anchor="middle" font-size="12">Criar Agendamento</text>
+
+                        <ellipse cx="550" cy="260" rx="95" ry="25" fill="#FFF3E0" stroke="#FECA57" stroke-width="1.5"/>
+                        <text x="550" y="265" text-anchor="middle" font-size="12">Cancelar Agendamento</text>
+
+                        <ellipse cx="750" cy="260" rx="85" ry="25" fill="#FFF3E0" stroke="#FECA57" stroke-width="1.5"/>
+                        <text x="750" y="265" text-anchor="middle" font-size="12">Reagendar Horário</text>
+
+                        <ellipse cx="350" cy="340" rx="100" ry="25" fill="#FCE4EC" stroke="#FF6B6B" stroke-width="1.5"/>
+                        <text x="350" y="345" text-anchor="middle" font-size="12">Registrar Pagamento</text>
+
+                        <ellipse cx="570" cy="340" rx="90" ry="25" fill="#FCE4EC" stroke="#FF6B6B" stroke-width="1.5"/>
+                        <text x="570" y="345" text-anchor="middle" font-size="12">Emitir Recibo</text>
+
+                        <ellipse cx="780" cy="340" rx="100" ry="25" fill="#E8EAF6" stroke="#5C6BC0" stroke-width="1.5"/>
+                        <text x="780" y="345" text-anchor="middle" font-size="12">Gerar Relatórios</text>
+
+                        <ellipse cx="460" cy="420" rx="100" ry="25" fill="#FEF9E6" stroke="#9B59B6" stroke-width="1.5"/>
+                        <text x="460" y="425" text-anchor="middle" font-size="12">Visualizar Dashboard</text>
+
+                        <ellipse cx="680" cy="420" rx="90" ry="25" fill="#FEF9E6" stroke="#9B59B6" stroke-width="1.5"/>
+                        <text x="680" y="425" text-anchor="middle" font-size="12">Buscar Cliente</text>
+
+                        <ellipse cx="460" cy="500" rx="110" ry="25" fill="#E8F8F5" stroke="#00D2D3" stroke-width="1.5"/>
+                        <text x="460" y="505" text-anchor="middle" font-size="12">Enviar Notificações</text>
+
+                        <!-- Relacionamentos - Admin -->
+                        <line x1="80" y1="320" x2="260" y2="180" stroke="#9B59B6" stroke-width="1.5"/>
+                        <line x1="80" y1="320" x2="470" y2="180" stroke="#9B59B6" stroke-width="1.5"/>
+                        <line x1="80" y1="320" x2="670" y2="180" stroke="#9B59B6" stroke-width="1.5"/>
+                        <line x1="80" y1="320" x2="260" y2="340" stroke="#9B59B6" stroke-width="1.5"/>
+                        <line x1="80" y1="320" x2="480" y2="340" stroke="#9B59B6" stroke-width="1.5"/>
+                        <line x1="80" y1="320" x2="680" y2="340" stroke="#9B59B6" stroke-width="1.5"/>
+
+                        <!-- Relacionamentos - Recepcionista -->
+                        <line x1="80" y1="120" x2="260" y2="180" stroke="#00D2D3" stroke-width="1.5"/>
+                        <line x1="80" y1="120" x2="470" y2="180" stroke="#00D2D3" stroke-width="1.5"/>
+                        <line x1="80" y1="120" x2="260" y2="260" stroke="#00D2D3" stroke-width="1.5"/>
+                        <line x1="80" y1="120" x2="455" y2="260" stroke="#00D2D3" stroke-width="1.5"/>
+                        <line x1="80" y1="120" x2="665" y2="260" stroke="#00D2D3" stroke-width="1.5"/>
+                        <line x1="80" y1="120" x2="250" y2="340" stroke="#00D2D3" stroke-width="1.5"/>
+                        <line x1="80" y1="120" x2="480" y2="340" stroke="#00D2D3" stroke-width="1.5"/>
+
+                        <!-- Relacionamentos - Cliente -->
+                        <line x1="80" y1="570" x2="590" y2="420" stroke="#FECA57" stroke-width="1.5"/>
+                        <line x1="80" y1="570" x2="350" y2="500" stroke="#FECA57" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                
+                <h3>📋 Atores e suas Responsabilidades</h3>
+                <table class="description-table">
+                    <thead>
+                        <tr><th>Ator</th><th>Descrição</th><th>Casos de Uso Principais</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Administrador</strong></td><td>Gerencia todo o sistema</td><td>Relatórios, configurações, gestão completa</td></tr>
+                        <tr><td><strong>Recepcionista</strong></td><td>Atendimento ao cliente</td><td>Cadastro, agendamentos, pagamentos, notificações</td></tr>
+                        <tr><td><strong>Cliente</strong></td><td>Usuário final</td><td>Consultar dados, receber notificações</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Diagrama de Sequência -->
+        <div id="sequence-diagram" class="diagram-card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>🔄 Diagrama de Sequência - Fluxo de Cadastro de Cliente</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1100 650" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="1100" height="650" fill="#faf9fe" rx="10"/>
+                        
+                        <!-- Atores/Lifelines -->
+                        <!-- Usuário -->
+                        <rect x="50" y="50" width="100" height="40" fill="#9B59B6" rx="5"/>
+                        <text x="100" y="75" text-anchor="middle" fill="white" font-weight="bold">Usuário</text>
+                        <line x1="100" y1="90" x2="100" y2="600" stroke="#9B59B6" stroke-width="2" stroke-dasharray="8,4"/>
+
+                        <!-- UI -->
+                        <rect x="250" y="50" width="100" height="40" fill="#00D2D3" rx="5"/>
+                        <text x="300" y="75" text-anchor="middle" fill="white" font-weight="bold">Interface</text>
+                        <line x1="300" y1="90" x2="300" y2="600" stroke="#00D2D3" stroke-width="2" stroke-dasharray="8,4"/>
+
+                        <!-- Controller -->
+                        <rect x="450" y="50" width="120" height="40" fill="#FECA57" rx="5"/>
+                        <text x="510" y="75" text-anchor="middle" fill="white" font-weight="bold">Controller</text>
+                        <line x1="510" y1="90" x2="510" y2="600" stroke="#FECA57" stroke-width="2" stroke-dasharray="8,4"/>
+
+                        <!-- Model -->
+                        <rect x="680" y="50" width="100" height="40" fill="#FF6B6B" rx="5"/>
+                        <text x="730" y="75" text-anchor="middle" fill="white" font-weight="bold">Model</text>
+                        <line x1="730" y1="90" x2="730" y2="600" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="8,4"/>
+
+                        <!-- Storage -->
+                        <rect x="880" y="50" width="120" height="40" fill="#5C6BC0" rx="5"/>
+                        <text x="940" y="75" text-anchor="middle" fill="white" font-weight="bold">LocalStorage</text>
+                        <line x1="940" y1="90" x2="940" y2="600" stroke="#5C6BC0" stroke-width="2" stroke-dasharray="8,4"/>
+
+                        <!-- Setas de comunicação -->
+                        <!-- 1. Abrir modal -->
+                        <line x1="100" y1="130" x2="290" y2="130" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="195" y="120" text-anchor="middle" font-size="11">1. Clicar "Novo Cliente"</text>
+
+                        <!-- 2. Exibir formulário -->
+                        <line x1="300" y1="170" x2="110" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <text x="205" y="160" text-anchor="middle" font-size="11">2. Exibir formulário</text>
+
+                        <!-- 3. Preencher dados -->
+                        <line x1="100" y1="220" x2="290" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="195" y="210" text-anchor="middle" font-size="11">3. Preencher dados</text>
+
+                        <!-- 4. Submeter formulário -->
+                        <line x1="100" y1="270" x2="290" y2="270" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="195" y="260" text-anchor="middle" font-size="11">4. Salvar</text>
+
+                        <!-- 5. Validar dados -->
+                        <rect x="300" y="295" width="200" height="30" fill="#FFF3E0" stroke="#FECA57" rx="3"/>
+                        <text x="400" y="315" text-anchor="middle" font-size="11">validarFormulario()</text>
+
+                        <!-- 6. Chamar Controller -->
+                        <line x1="300" y1="350" x2="500" y2="350" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="400" y="340" text-anchor="middle" font-size="11">6. saveClient(dados)</text>
+
+                        <!-- 7. Criar Model -->
+                        <line x1="510" y1="390" x2="720" y2="390" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="615" y="380" text-anchor="middle" font-size="11">7. new Client(dados)</text>
+
+                        <!-- 8. Retornar objeto -->
+                        <line x1="730" y1="430" x2="520" y2="430" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <text x="625" y="420" text-anchor="middle" font-size="11">8. Client object</text>
+
+                        <!-- 9. Salvar no Storage -->
+                        <line x1="510" y1="470" x2="930" y2="470" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <text x="720" y="460" text-anchor="middle" font-size="11">9. localStorage.setItem()</text>
+
+                        <!-- 10. Sucesso -->
+                        <line x1="940" y1="510" x2="520" y2="510" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <text x="730" y="500" text-anchor="middle" font-size="11">10. Success</text>
+
+                        <!-- 11. Atualizar tabela -->
+                        <rect x="510" y="535" width="180" height="30" fill="#E8F8F5" stroke="#00D2D3" rx="3"/>
+                        <text x="600" y="555" text-anchor="middle" font-size="11">renderTable()</text>
+
+                        <!-- 12. Fechar modal -->
+                        <rect x="300" y="570" width="180" height="30" fill="#FCE4EC" stroke="#FF6B6B" rx="3"/>
+                        <text x="390" y="590" text-anchor="middle" font-size="11">closeModal()</text>
+
+                        <!-- 13. Toast de sucesso -->
+                        <line x1="300" y1="600" x2="110" y2="600" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+                        <text x="205" y="590" text-anchor="middle" font-size="11">13. Toast Sucesso</text>
+
+                        <!-- Definição da seta -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color" style="background:#9B59B6;"></div><span>Ator (Usuário)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#00D2D3;"></div><span>Interface (UI)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#FECA57;"></div><span>Controller</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#FF6B6B;"></div><span>Model</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#5C6BC0;"></div><span>Storage</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#FFF3E0;"></div><span>Ações Internas</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagrama Entidade-Relacionamento -->
+        <div id="er-diagram" class="diagram-card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>🗄️ Diagrama Entidade-Relacionamento (DER)</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="1100" height="500" fill="#faf9fe" rx="10"/>
+                        
+                        <!-- Entidade Clients -->
+                        <rect x="50" y="100" width="200" height="280" fill="#FEF9E6" stroke="#9B59B6" stroke-width="2" rx="8"/>
+                        <rect x="50" y="100" width="200" height="35" fill="#9B59B6" rx="8"/>
+                        <text x="150" y="123" text-anchor="middle" fill="white" font-weight="bold">clients</text>
+                        <line x1="50" y1="135" x2="250" y2="135" stroke="#9B59B6" stroke-width="1"/>
+                        <text x="60" y="160" font-size="11" fill="#555">* id : INTEGER (PK)</text>
+                        <text x="60" y="180" font-size="11" fill="#555">name : VARCHAR(100)</text>
+                        <text x="60" y="200" font-size="11" fill="#555">age : INTEGER</text>
+                        <text x="60" y="220" font-size="11" fill="#555">email : VARCHAR(100)</text>
+                        <text x="60" y="240" font-size="11" fill="#555">phone : VARCHAR(20)</text>
+                        <text x="60" y="260" font-size="11" fill="#555">service : VARCHAR(50)</text>
+                        <text x="60" y="280" font-size="11" fill="#555">service_date : DATE</text>
+                        <text x="60" y="300" font-size="11" fill="#555">price : DECIMAL(10,2)</text>
+                        <text x="60" y="320" font-size="11" fill="#555">status : VARCHAR(20)</text>
+                        <text x="60" y="340" font-size="11" fill="#555">notes : TEXT</text>
+                        <text x="60" y="360" font-size="11" fill="#555">created_at : TIMESTAMP</text>
+
+                        <!-- Entidade Services -->
+                        <rect x="400" y="50" width="220" height="220" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                        <rect x="400" y="50" width="220" height="35" fill="#00D2D3" rx="8"/>
+                        <text x="510" y="73" text-anchor="middle" fill="white" font-weight="bold">services</text>
+                        <line x1="400" y1="85" x2="620" y2="85" stroke="#00D2D3" stroke-width="1"/>
+                        <text x="410" y="110" font-size="11" fill="#555">* id : INTEGER (PK)</text>
+                        <text x="410" y="130" font-size="11" fill="#555">name : VARCHAR(50)</text>
+                        <text x="410" y="150" font-size="11" fill="#555">description : TEXT</text>
+                        <text x="410" y="170" font-size="11" fill="#555">duration : INTEGER</text>
+                        <text x="410" y="190" font-size="11" fill="#555">base_price : DECIMAL(10,2)</text>
+                        <text x="410" y="210" font-size="11" fill="#555">category : VARCHAR(50)</text>
+                        <text x="410" y="230" font-size="11" fill="#555">is_active : BOOLEAN</text>
+
+                        <!-- Entidade Appointments -->
+                        <rect x="750" y="100" width="220" height="230" fill="#FFF3E0" stroke="#FECA57" stroke-width="2" rx="8"/>
+                        <rect x="750" y="100" width="220" height="35" fill="#FECA57" rx="8"/>
+                        <text x="860" y="123" text-anchor="middle" fill="white" font-weight="bold">appointments</text>
+                        <line x1="750" y1="135" x2="970" y2="135" stroke="#FECA57" stroke-width="1"/>
+                        <text x="760" y="160" font-size="11" fill="#555">* id : INTEGER (PK)</text>
+                        <text x="760" y="180" font-size="11" fill="#555">client_id : INTEGER (FK)</text>
+                        <text x="760" y="200" font-size="11" fill="#555">service_id : INTEGER (FK)</text>
+                        <text x="760" y="220" font-size="11" fill="#555">appointment_date : DATETIME</text>
+                        <text x="760" y="240" font-size="11" fill="#555">status : VARCHAR(20)</text>
+                        <text x="760" y="260" font-size="11" fill="#555">notes : TEXT</text>
+                        <text x="760" y="280" font-size="11" fill="#555">created_at : TIMESTAMP</text>
+
+                        <!-- Relacionamentos -->
+                        <!-- Clients -> Appointments (1:N) -->
+                        <line x1="250" y1="220" x2="750" y2="220" stroke="#333" stroke-width="2"/>
+                        <text x="500" y="210" text-anchor="middle" font-size="11">1</text>
+                        <text x="500" y="235" text-anchor="middle" font-size="11">N</text>
+                        <text x="500" y="195" text-anchor="middle" font-size="10" fill="#888">possui</text>
+
+                        <!-- Services -> Appointments (1:N) -->
+                        <line x1="620" y1="160" x2="750" y2="180" stroke="#333" stroke-width="2"/>
+                        <text x="685" y="155" text-anchor="middle" font-size="11">1</text>
+                        <text x="685" y="185" text-anchor="middle" font-size="11">N</text>
+                        <text x="685" y="145" text-anchor="middle" font-size="10" fill="#888">utilizado</text>
+
+                        <!-- Legenda -->
+                        <rect x="50" y="420" width="400" height="60" fill="white" stroke="#ccc" rx="5"/>
+                        <text x="250" y="440" text-anchor="middle" font-weight="bold" font-size="12">Legenda</text>
+                        <text x="70" y="460" font-size="11">* PK = Primary Key</text>
+                        <text x="250" y="460" font-size="11">FK = Foreign Key</text>
+                    </svg>
+                </div>
+                
+                <h3>📋 Relacionamentos entre Entidades</h3>
+                <table class="description-table">
+                    <thead><tr><th>Relacionamento</th><th>Tipo</th><th>Descrição</th></tr></thead>
+                    <tbody>
+                        <tr><td>clients → appointments</td><td>1 : N</td><td>Um cliente pode ter vários agendamentos</td></tr>
+                        <tr><td>services → appointments</td><td>1 : N</td><td>Um serviço pode ser usado em vários agendamentos</td></tr>
+                        <tr><td>appointments → payments</td><td>1 : 1</td><td>Cada agendamento gera um pagamento</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Diagrama de Estados -->
+        <div id="state-diagram" class="diagram-card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>📈 Diagrama de Estados - Ciclo de Vida do Cliente</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <div class="diagram-container">
+                    <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="1000" height="500" fill="#faf9fe" rx="10"/>
+                        
+                        <!-- Estado Inicial -->
+                        <circle cx="50" cy="250" r="15" fill="#333"/>
+                        <line x1="65" y1="250" x2="150" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+                        <!-- Estado: Novo -->
+                        <rect x="150" y="220" width="140" height="60" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                        <text x="220" y="245" text-anchor="middle" font-weight="bold" font-size="13">Novo Cliente</text>
+                        <text x="220" y="265" text-anchor="middle" font-size="10">entry: criar registro</text>
+
+                        <!-- Transição: cadastrar -->
+                        <line x1="290" y1="250" x2="400" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <text x="345" y="240" text-anchor="middle" font-size="10">cadastrar</text>
+
+                        <!-- Estado: Cadastrado -->
+                        <rect x="400" y="220" width="140" height="60" fill="#FFF3E0" stroke="#FECA57" stroke-width="2" rx="8"/>
+                        <text x="470" y="245" text-anchor="middle" font-weight="bold" font-size="13">Cadastrado</text>
+                        <text x="470" y="265" text-anchor="middle" font-size="10">do: aguardando</text>
+
+                        <!-- Transição: agendar -->
+                        <line x1="540" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <text x="595" y="240" text-anchor="middle" font-size="10">agendar serviço</text>
+
+                        <!-- Estado: Em Atendimento -->
+                        <rect x="650" y="220" width="160" height="60" fill="#FCE4EC" stroke="#FF6B6B" stroke-width="2" rx="8"/>
+                        <text x="730" y="245" text-anchor="middle" font-weight="bold" font-size="13">Em Atendimento</text>
+                        <text x="730" y="265" text-anchor="middle" font-size="10">do: realizar serviços</text>
+
+                        <!-- Transição: concluir -->
+                        <line x1="730" y1="280" x2="730" y2="380" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <text x="750" y="330" text-anchor="start" font-size="10">concluir tratamento</text>
+
+                        <!-- Estado: Concluído -->
+                        <rect x="620" y="380" width="220" height="60" fill="#E8EAF6" stroke="#5C6BC0" stroke-width="2" rx="8"/>
+                        <text x="730" y="405" text-anchor="middle" font-weight="bold" font-size="13">Concluído / Alta</text>
+                        <text x="730" y="425" text-anchor="middle" font-size="10">do: arquivar registro</text>
+
+                        <!-- Transição: retorno -->
+                        <line x1="620" y1="410" x2="550" y2="250" stroke="#333" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="5,5"/>
+                        <text x="570" y="340" text-anchor="end" font-size="10">retorno</text>
+
+                        <!-- Transição: suspender -->
+                        <line x1="650" y1="250" x2="470" y2="330" stroke="#FECA57" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+                        <text x="500" y="300" text-anchor="start" font-size="9" fill="#FECA57">suspender</text>
+
+                        <!-- Definição da seta -->
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+                
+                <h3>📋 Descrição dos Estados</h3>
+                <table class="description-table">
+                    <thead><tr><th>Estado</th><th>Descrição</th><th>Ações Possíveis</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="badge-active">Novo Cliente</span></td><td>Cliente recém-cadastrado</td><td>Editar dados, agendar serviço</td></tr>
+                        <tr><td><span class="badge-pending">Cadastrado</span></td><td>Aguardando primeiro atendimento</td><td>Agendar, reagendar, cancelar</td></tr>
+                        <tr><td><span class="badge-active">Em Atendimento</span></td><td>Cliente ativo na clínica</td><td>Realizar serviços, suspender, concluir</td></tr>
+                        <tr><td><span class="badge-completed">Concluído/Alta</span></td><td>Tratamento finalizado</td><td>Arquivar, retorno futuro</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Diagrama de Atividades -->
+        <div id="activity-diagram" class="diagram-card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h2>⚙️ Diagrama de Atividades - Fluxo de Agendamento</h2>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="card-content">
+                <div class="diagram-container">
+                    <svg viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="800" height="900" fill="#faf9fe" rx="10"/>
+                        
+                        <!-- Início -->
+                        <circle cx="400" cy="40" r="15" fill="#333"/>
+                        <line x1="400" y1="55" x2="400" y2="80" stroke="#333" stroke-width="2"/>
+
+                        <!-- Atividade 1 -->
+                        <rect x="280" y="80" width="240" height="50" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                        <text x="400" y="110" text-anchor="middle" font-size="12">Cliente entra em contato</text>
+                        <line x1="400" y1="130" x2="400" y2="160" stroke="#333" stroke-width="2"/>
+
+                        <!-- Atividade 2 -->
+                        <rect x="280" y="160" width="240" height="50" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                        <text x="400" y="190" text-anchor="middle" font-size="12">Recepcionista verifica disponibilidade</text>
+                        <line x1="400" y1="210" x2="400" y2="240" stroke="#333" stroke-width="2"/>
+
+                        <!-- Decisão: Cliente cadastrado? -->
+                        <polygon points="400,240 440,270 400,300 360,270" fill="#FFF3E0" stroke="#FECA57" stroke-width="2"/>
+                        <text x="400" y="275" text-anchor="middle" font-size="10">Cadastrado?</text>
+
+                        <!-- Ramo SIM -->
+                        <line x1="440" y1="270" x2="520" y2="270" stroke="#333" stroke-width="2"/>
+                        <text x="480" y="260" text-anchor="middle" font-size="11">Sim</text>
+                        <line x1="520" y1="270" x2="520" y2="340" stroke="#333" stroke-width="2"/>
+
+                        <!-- Ramo NÃO -->
+                        <line x1="360" y1="270" x2="280" y2="270" stroke="#333" stroke-width="2"/>
+                        <text x="320" y="260" text-anchor="middle" font-size="11">Não</text>
+                        <line x1="280" y1="270" x2="280" y2="340" stroke="#333" stroke-width="2"/>
+
+                        <!-- Atividade Cadastro -->
+                        <rect x="140" y="340" width="280" height="50" fill="#FCE4EC" stroke="#FF6B6B" stroke-width="2" rx="8"/>
+                        <text x="280" y="370" text-anchor="middle" font-size="12">Realizar cadastro completo</text>
+                        <line x1="280" y1="390" x2="520" y2="390" stroke="#333" stroke-width="2"/>
+
+                        <!-- Atividade Buscar -->
+                        <rect x="380" y="340" width="280" height="50" fill="#FCE4EC" stroke="#FF6B6B" stroke-width="2" rx="8"/>
+                        <text x="520" y="370" text-anchor="middle" font-size="12">Buscar dados do cliente</text>
+                        <line x1="520" y1="390" x2="520" y2="420" stroke="#333" stroke-width="2"/>
+
+                        <!-- União -->
+                        <line x1="280" y1="390" x2="520" y2="390" stroke="#333" stroke-width="2"/>
+
+                        <!-- Atividade Selecionar Serviço -->
+                        <rect x="280" y="420" width="240" height="50" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                        <text x="400" y="450" text-anchor="middle" font-size="12">Selecionar serviço desejado</text>
+                        <line x1="400" y1="470" x2="400" y2="500" stroke="#333" stroke-width="2"/>
+
+                        <!-- Decisão Horário -->
+                        <polygon points="400,500 440,530 400,560 360,530" fill="#FFF3E0" stroke="#FECA57" stroke-width="2"/>
+                        <text x="400" y="535" text-anchor="middle" font-size="10">Disponível?</text>
+
+                        <!-- Ramo NÃO -->
+                        <line x1="360" y1="530" x2="200" y2="530" stroke="#333" stroke-width="2"/>
+                        <text x="280" y="520" text-anchor="middle" font-size="11">Não</text>
+                        <line x1="200" y1="530" x2="200" y2="580" stroke="#333" stroke-width="2"/>
+
+                        <!-- Sugerir alternativas -->
+                        <rect x="60" y="580" width="280" height="50" fill="#FFF3E0" stroke="#FECA57" stroke-width="2" rx="8"/>
+                        <text x="200" y="610" text-anchor="middle" font-size="12">Sugerir horários alternativos</text>
+                        <line x1="200" y1="630" x2="200" y2="660" stroke="#333" stroke-width="2"/>
+
+                        <!-- Cliente escolhe -->
+                        <rect x="60" y="660" width="280" height="50" fill="#FFF3E0" stroke="#FECA57" stroke-width="2" rx="8"/>
+                        <text x="200" y="690" text-anchor="middle" font-size="12">Cliente escolhe novo horário</text>
+                        <line x1="200" y1="710" x2="400" y2="710" stroke="#333" stroke-width="2"/>
+
+                        <!-- Ramo SIM -->
+                        <line x1="440" y1="530" x2="600" y2="530" stroke="#333" stroke-width="2"/>
+                        <text x="520" y="520" text-anchor="middle" font-size="11">Sim</text>
+                        <line x1="600" y1="530" x2="600" y2="580" stroke="#333" stroke-width="2"/>
+
+                        <!-- Confirmar -->
+                        <rect x="460" y="580" width="280" height="50" fill="#E8EAF6" stroke="#5C6BC0" stroke-width="2" rx="8"/>
+                        <text x="600" y="610" text-anchor="middle" font-size="12">Confirmar agendamento</text>
+                        <line x1="600" y1="630" x2="600" y2="660" stroke="#333" stroke-width="2"/>
+
+                        <!-- União -->
+                        <line x1="400" y1="710" x2="600" y2="710" stroke="#333" stroke-width="2"/>
+                        <line x1="400" y1="710" x2="400" y2="740" stroke="#333" stroke-width="2"/>
+
+                        <!-- Atividade Final -->
+                        <rect x="280" y="740" width="240" height="50" fill="#E8F8F5" stroke="#00D2D3" stroke-width="2" rx="8"/>
+                        <text x="400" y="770" text-anchor="middle" font-size="12">Registrar no sistema</text>
+                        <line x1="400" y1="790" x2="400" y2="820" stroke="#333" stroke-width="2"/>
+
+                        <!-- Fim -->
+                        <circle cx="400" cy="850" r="15" fill="#333"/>
+                        <circle cx="400" cy="850" r="10" fill="white"/>
+                    </svg>
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color" style="background:#E8F8F5;"></div><span>Ações do Sistema</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#FFF3E0;"></div><span>Decisões</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#FCE4EC;"></div><span>Interação com Usuário</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background:#E8EAF6;"></div><span>Confirmações</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📐 BeautyCare - Sistema de Gestão de Clientes e Serviços de Estética</p>
+        <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Documentação UML Completa | Modelagem de Software | Versão 2.0</p>
+        <p style="margin-top: 15px; font-size: 0.8em;">© 2024 - Todos os diagramas seguem notação UML 2.5</p>
+    </div>
+
+    <script>
+        // Função para toggle dos cards
+        function toggleCard(headerElement) {
+            const card = headerElement.closest('.diagram-card');
+            const content = card.querySelector('.card-content');
+            const icon = headerElement.querySelector('.toggle-icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '▼';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '▶';
+            }
+        }
+
+        // Função para copiar diagrama (placeholder)
+        function copyDiagram(diagramId) {
+            alert('Função de exportação disponível na versão premium!\n\nPara copiar este diagrama, utilize o botão direito do mouse.');
+        }
+
+        // Smooth scroll para navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Inicialização: todos os cards começam abertos
+        document.querySelectorAll('.card-content').forEach(content => {
+            content.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
